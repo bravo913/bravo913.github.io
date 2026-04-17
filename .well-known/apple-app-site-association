@@ -1,0 +1,14 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["437N34D3P6.tw.bravo913.radio"],
+        "components": [
+          { "/": "/program/*", "comment": "節目分享連結" },
+          { "/": "/unit/*",    "comment": "精選單元分享連結" },
+          { "/": "/episode/*", "comment": "單集分享連結" }
+        ]
+      }
+    ]
+  }
+}
