@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="apple-itunes-app" content="app-argument=bravo://">
   <title>Bravo FM 91.3</title>
   <style>
     * { box-sizing: border-box; }
@@ -53,23 +54,38 @@
     audio {
       width: 100%;
       margin-top: 8px;
-    }
-    .hint {
-      font-size: 13px;
-      color: #9A8F7E;
-      margin-top: 20px;
-      line-height: 1.6;
+      margin-bottom: 16px;
     }
     .btn {
-      display: inline-block;
-      padding: 12px 24px;
-      background: #C8622A;
-      color: #FFFFFF;
+      display: block;
+      width: 100%;
+      padding: 14px 20px;
       text-decoration: none;
       font-weight: 700;
       letter-spacing: 1px;
-      font-size: 14px;
-      margin-top: 16px;
+      font-size: 15px;
+      margin-top: 12px;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn-primary {
+      background: #C8622A;
+      color: #FFFFFF;
+    }
+    .btn-primary:active { background: #A54F1F; }
+    .btn-secondary {
+      background: #FFFFFF;
+      color: #2A2520;
+      border: 1px solid #C8622A;
+    }
+    .btn-secondary:active { background: #FBF8F0; }
+    .hint {
+      font-size: 12px;
+      color: #9A8F7E;
+      margin-top: 20px;
+      line-height: 1.6;
     }
     footer {
       margin-top: 32px;
@@ -86,6 +102,8 @@
     <h1 id="title">Bravo FM 91.3</h1>
     <p class="sub" id="subtitle">古典・爵士・世界音樂</p>
     <audio id="player" controls style="display:none"></audio>
+    <a id="btnApp" class="btn btn-primary" href="#" style="display:none">🎧 用 Bravo Radio App 開啟</a>
+    <a id="btnWeb" class="btn btn-secondary" href="#" style="display:none" target="_blank" rel="noopener">🌐 在瀏覽器開啟官網</a>
     <p class="hint" id="hint"></p>
   </div>
   <footer>© Bravo FM 91.3</footer>
@@ -106,34 +124,48 @@
     const subEl = document.getElementById('subtitle');
     const playerEl = document.getElementById('player');
     const hintEl = document.getElementById('hint');
+    const btnApp = document.getElementById('btnApp');
+    const btnWeb = document.getElementById('btnWeb');
 
-    // 節目／單元：直接轉官網（有 App 的話 iOS 會先攔截，這段不會執行）
+    function showAppButton(url) {
+      btnApp.href = url;
+      btnApp.style.display = 'block';
+    }
+    function showWebButton(url, label) {
+      btnWeb.href = url;
+      if (label) btnWeb.textContent = label;
+      btnWeb.style.display = 'block';
+    }
+
     if (path.startsWith('/program') && id) {
-      window.location.replace(OFFICIAL + '?route=choice/program_detail&choice_program_id=' + encodeURIComponent(id));
+      // 節目
+      kickerEl.textContent = 'PROGRAM · 節目';
+      titleEl.textContent = name || '節目';
+      subEl.textContent = '';
+      showAppButton('bravo://program?id=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name));
+      showWebButton(OFFICIAL + '?route=choice/program_detail&choice_program_id=' + encodeURIComponent(id), '🌐 在瀏覽器開啟官網節目頁');
+      hintEl.innerHTML = '裝有 Bravo Radio App 的 iPhone，點分享連結時會自動在 App 中開啟。<br>沒有 App 的裝置可選擇在瀏覽器檢視官網。';
     } else if (path.startsWith('/unit') && id) {
-      window.location.replace(OFFICIAL + '?route=choice/unit_detail&choice_program_id=' + encodeURIComponent(id));
+      // 單元
+      kickerEl.textContent = 'UNIT · 精選單元';
+      titleEl.textContent = name || '單元';
+      subEl.textContent = '';
+      showAppButton('bravo://unit?id=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name));
+      showWebButton(OFFICIAL + '?route=choice/unit_detail&choice_program_id=' + encodeURIComponent(id), '🌐 在瀏覽器開啟官網單元頁');
+      hintEl.innerHTML = '裝有 Bravo Radio App 的 iPhone，點分享連結時會自動在 App 中開啟。<br>沒有 App 的裝置可選擇在瀏覽器檢視官網。';
     } else if (path.startsWith('/episode')) {
-      // 單集：內嵌 <audio> 讓 Safari 直接播
+      // 單集
       kickerEl.textContent = 'EPISODE · 單集';
       if (title) titleEl.textContent = title;
       subEl.textContent = program ? '《' + program + '》' : '';
       if (audio) {
         playerEl.src = audio;
         playerEl.style.display = 'block';
-        hintEl.innerHTML = '裝有 Bravo Radio App 的 iPhone 會自動在 App 中開啟收聽。';
-      } else {
-        hintEl.textContent = '分享連結未附音檔來源，無法在瀏覽器中播放。';
       }
-    } else if (path.startsWith('/program')) {
-      kickerEl.textContent = 'PROGRAM · 節目';
-      titleEl.textContent = name || '節目';
-      hintEl.textContent = '缺少節目編號，無法跳轉官網。';
-    } else if (path.startsWith('/unit')) {
-      kickerEl.textContent = 'UNIT · 精選單元';
-      titleEl.textContent = name || '單元';
-      hintEl.textContent = '缺少單元編號，無法跳轉官網。';
+      showAppButton('bravo://episode?id=' + encodeURIComponent(id) + '&title=' + encodeURIComponent(title) + '&program=' + encodeURIComponent(program));
+      hintEl.innerHTML = '裝有 Bravo Radio App 的 iPhone，點分享連結時會自動在 App 中開啟。<br>沒有 App 也可直接在此頁面播放。';
     } else {
-      // Root / 其他路徑：顯示 App 介紹
+      // Root / 其他路徑
       hintEl.innerHTML = '收聽古典、爵士、世界音樂。<br>在 iOS 上安裝 Bravo Radio App 後，分享連結可直接在 App 中開啟。';
     }
   </script>
