@@ -10,7 +10,7 @@
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Noto Serif TC", serif;
-      background: #F5F1E8;
+      background: #F5F1EA;
       color: #2A2520;
       min-height: 100vh;
       display: flex;
@@ -45,10 +45,16 @@
       color: #6E6355;
       margin: 0 0 24px;
     }
+    .logo {
+      width: 96px;
+      height: auto;
+      display: block;
+      margin: 0 auto 16px;
+    }
     .bar {
       height: 2px;
       width: 48px;
-      background: #C8622A;
+      background: #4C3327;
       margin: 0 auto 24px;
     }
     audio {
@@ -71,16 +77,16 @@
       font-family: inherit;
     }
     .btn-primary {
-      background: #C8622A;
+      background: #4C3327;
       color: #FFFFFF;
     }
-    .btn-primary:active { background: #A54F1F; }
+    .btn-primary:active { background: #32201A; }
     .btn-secondary {
       background: #FFFFFF;
       color: #2A2520;
-      border: 1px solid #C8622A;
+      border: 1px solid #4C3327;
     }
-    .btn-secondary:active { background: #FBF8F0; }
+    .btn-secondary:active { background: #EFE5D0; }
     .hint {
       font-size: 12px;
       color: #9A8F7E;
@@ -97,12 +103,13 @@
 </head>
 <body>
   <div class="card">
+    <img class="logo" src="/logo.png" alt="Bravo FM 91.3">
     <div class="bar"></div>
-    <div class="kicker" id="kicker">BRAVO FM 91.3</div>
+    <div class="kicker" id="kicker">Bravo FM 91.3</div>
     <h1 id="title">Bravo FM 91.3</h1>
     <p class="sub" id="subtitle">古典・爵士・世界音樂</p>
     <audio id="player" controls style="display:none"></audio>
-    <a id="btnApp" class="btn btn-primary" href="#" style="display:none">🎧 用 Bravo Radio App 開啟</a>
+    <a id="btnApp" class="btn btn-primary" href="#" style="display:none">🎧 用 Bravo FM 91.3 App 開啟</a>
     <a id="btnWeb" class="btn btn-secondary" href="#" style="display:none" target="_blank" rel="noopener">🌐 在瀏覽器開啟官網</a>
     <p class="hint" id="hint"></p>
   </div>
@@ -144,7 +151,7 @@
       subEl.textContent = '';
       showAppButton('bravo://program?id=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name));
       showWebButton(OFFICIAL + '?route=choice/program_detail&choice_program_id=' + encodeURIComponent(id), '🌐 在瀏覽器開啟官網節目頁');
-      hintEl.innerHTML = '裝有 Bravo Radio App 的 iPhone，點分享連結時會自動在 App 中開啟。<br>沒有 App 的裝置可選擇在瀏覽器檢視官網。';
+      hintEl.innerHTML = '裝有 Bravo FM 91.3 App 的 iPhone，點分享連結時會自動在 App 中開啟。<br>沒有 App 的裝置可選擇在瀏覽器檢視官網。';
     } else if (path.startsWith('/unit') && id) {
       // 單元
       kickerEl.textContent = 'UNIT · 精選單元';
@@ -152,7 +159,7 @@
       subEl.textContent = '';
       showAppButton('bravo://unit?id=' + encodeURIComponent(id) + '&name=' + encodeURIComponent(name));
       showWebButton(OFFICIAL + '?route=choice/unit_detail&choice_program_id=' + encodeURIComponent(id), '🌐 在瀏覽器開啟官網單元頁');
-      hintEl.innerHTML = '裝有 Bravo Radio App 的 iPhone，點分享連結時會自動在 App 中開啟。<br>沒有 App 的裝置可選擇在瀏覽器檢視官網。';
+      hintEl.innerHTML = '裝有 Bravo FM 91.3 App 的 iPhone，點分享連結時會自動在 App 中開啟。<br>沒有 App 的裝置可選擇在瀏覽器檢視官網。';
     } else if (path.startsWith('/episode')) {
       // 單集
       kickerEl.textContent = 'EPISODE · 單集';
@@ -163,10 +170,10 @@
         playerEl.style.display = 'block';
       }
       showAppButton('bravo://episode?id=' + encodeURIComponent(id) + '&title=' + encodeURIComponent(title) + '&program=' + encodeURIComponent(program));
-      hintEl.innerHTML = '裝有 Bravo Radio App 的 iPhone，點分享連結時會自動在 App 中開啟。<br>沒有 App 也可直接在此頁面播放。';
+      hintEl.innerHTML = '裝有 Bravo FM 91.3 App 的 iPhone，點分享連結時會自動在 App 中開啟。<br>沒有 App 也可直接在此頁面播放。';
     } else {
       // Root / 其他路徑
-      hintEl.innerHTML = '收聽古典、爵士、世界音樂。<br>在 iOS 上安裝 Bravo Radio App 後，分享連結可直接在 App 中開啟。';
+      hintEl.innerHTML = '收聽古典、爵士、世界音樂。<br>在 iOS 上安裝 Bravo FM 91.3 App 後，分享連結可直接在 App 中開啟。';
     }
   </script>
 </body>
